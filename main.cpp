@@ -40,7 +40,7 @@ Token lexer(std::ifstream& inputFile) {
         switch (currentState) {
             case State::START:
                 lexeme.clear();
-                if (std::isalpha(currentChar)) {
+                if (std::isalpha(currentChar) || currentChar == '_') {
                     currentState = State::IN_IDENTIFIER;
                     lexeme += currentChar;
                 } 
