@@ -89,7 +89,7 @@ Token lexer(std::ifstream& inputFile) {
                     return { "Integer", lexeme };
                 }
                 break;
-            case State::IN_REAL:
+            case State::IN_REAL: //Handles real numbers (floating point and ect)
                 if (std::isdigit(currentChar)) {
                     lexeme += currentChar;
                 } 
