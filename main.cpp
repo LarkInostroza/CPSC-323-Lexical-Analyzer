@@ -34,7 +34,7 @@ int main() {
 bool isOperator(char current) {
   return (current == '+') || (current == '-') || (current == '*') || (current == '/') || (current == '%') ||
      (current == '?') || (current == ',') || (current == '&') || (current == '|') ||
-     (current == '^') || (current == '~') || (current == '<') || (current == '>');
+     (current == '^') || (current == '~') || (current == '<') || (current == '>')|| (current == '=');
 }
 bool isSeparator(char current) {
     const char separators[] = { ';', ',', ':', '.', '-', '>', '(', ')', '[', ']', '{', '}', '#', '\\'};
