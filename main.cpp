@@ -73,7 +73,7 @@ bool isKeyword(std::string current) {
 
 //The world's worst switch statement called a lexer
 Token lexer(std::ifstream& inputFile) {
-    enum class State { START, IN_IDENTIFIER, IN_INTEGER, IN_REAL, IN_OPERATOR, DONE };
+    enum class State { START, IN_IDENTIFIER, IN_INTEGER, IN_REAL, IN_OPERATOR, IN_COMMENT, IN_STRING, DONE};
 
     State currentState = State::START;
     std::string lexeme;
@@ -98,10 +98,18 @@ Token lexer(std::ifstream& inputFile) {
                     lexeme += currentChar;
                     return { "Separator", lexeme };
                 } 
+                else if (currentChar == '/'){
+                  currentState = State::IN_COMMENT;
+                  lexeme += currentChar;
+                }
                 else if (isOperator(currentChar)) {
                     lexeme += currentChar;
                     return { "Operator", lexeme };
                 } 
+                else if (currentChar == '"') {
+                    currentState = State::IN_STRING;
+                    lexeme += currentChar;
+                }
                 else {
                     currentState = State::IN_OPERATOR;
                     lexeme += currentChar;
@@ -142,9 +150,24 @@ Token lexer(std::ifstream& inputFile) {
                 }
                 break;
             case State::IN_OPERATOR:
-                //Redundancy
+                
                 lexeme += currentChar;
                 return { "Operator", lexeme };
+            case State::IN_COMMENT:
+                if (currentChar == '/') {
+                  //Skip characters until newline character or end of file
+                  while (inputFile.get(currentChar) && currentChar != '\n') {
+                  //Ignore until end
+                  }
+                currentState = State::START;
+                }
+                break;
+            case State::IN_STRING:
+                lexeme += currentChar;
+                if (currentChar == '"') {
+                  return { "String", lexeme };
+                }
+                break;
             case State::DONE:
                 break;
         }
